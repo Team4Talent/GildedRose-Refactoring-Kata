@@ -1,4 +1,6 @@
-﻿namespace GildedRoseKata
+﻿using System.Net.Http.Headers;
+
+namespace GildedRoseKata
 {
     public class Item
     {
