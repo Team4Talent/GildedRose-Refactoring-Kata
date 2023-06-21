@@ -23,6 +23,18 @@ public class GildedRose
                 ProcessConjured(i);
                 return;
             }
+            
+            if (Items[i].Name.Contains("Armour", StringComparison.OrdinalIgnoreCase))
+            {
+                ProcessArmour(i);
+                return;
+            }
+
+            if (Items[i].Name.Contains("Backstage Passes", StringComparison.OrdinalIgnoreCase))
+            {
+                ProcessBackStagePasses(i);
+                return;
+            }
 
             if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
             {
@@ -101,6 +113,34 @@ public class GildedRose
     private void ProcessConjured(int i)
     {
         Items[i].Quality = ClampValue(Items[i].Quality - 2, 0, 50);
+        Items[i].SellIn = ClampValue(Items[i].SellIn - 1, 0, int.MaxValue);
+    }
+    
+    private void ProcessArmour(int i)
+    {
+        int factor = 1;
+        if (Items[i].SellIn == 0)
+        {
+            factor = 2;
+        }
+        
+        
+        Items[i].Quality = ClampValue(Items[i].Quality - (1 * factor), 0, 50);
+        Items[i].SellIn = ClampValue(Items[i].SellIn - 1, 0, int.MaxValue);
+    }
+    
+    private void ProcessBackStagePasses(int i)
+    {
+        int factor = 1;
+        if (Items[i].SellIn <= 10)
+        {
+            factor = 2;
+        }
+        if (Items[i].SellIn <= 5)
+        {
+            factor = 3;
+        }
+        Items[i].Quality = ClampValue(Items[i].Quality + (1 * factor), 0, 50);
         Items[i].SellIn = ClampValue(Items[i].SellIn - 1, 0, int.MaxValue);
     }
 

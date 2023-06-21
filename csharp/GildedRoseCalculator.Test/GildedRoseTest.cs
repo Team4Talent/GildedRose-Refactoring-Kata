@@ -124,7 +124,8 @@ public class GildedRoseTest
     }
 
     [TestCaseSource(nameof(TestCases))]
-    public void UpdateQuality_ForTestCase_ReturnsExpectedResult(string name, int quality, int days, int expectedQuality, int expectedDaysLeft)
+    public void UpdateQuality_ForTestCase_ReturnsExpectedResult(string name, int quality, int days, 
+        int expectedQuality, int expectedDaysLeft, int daysToRun)
     {
         //Arrange
         var listItems = new List<Item>()
@@ -140,7 +141,7 @@ public class GildedRoseTest
         var sut = new GildedRose(listItems);
         
         //Act
-        for (int i = 0; i < days; i++)
+        for (int i = 0; i < daysToRun; i++)
         {
             sut.UpdateQuality();
         }
@@ -154,12 +155,15 @@ public class GildedRoseTest
 
     private static IEnumerable<TestCaseData> TestCases = new[]
     {
-        //name, quality, days, expectedQuality, expectedDaysLeft
-        new TestCaseData("Conjured", 50, 10, 30, 0),
-        new TestCaseData("Sulfuras", 50,10,80,0),
-        new TestCaseData("Armour", 5,10,0,0),
-        new TestCaseData("Aged Brie", 0,50,50,0),
-        new TestCaseData("Aged Brie", 0,100,50,0),
-        
+        //name, quality, days, expectedQuality, expectedDaysLeft, days to run
+        new TestCaseData("Conjured", 50, 10, 30, 0, 10),
+        new TestCaseData("Sulfuras", 50,10,80,0,10),
+        new TestCaseData("Armour", 5,10,0,0,10),
+        new TestCaseData("Armour", 50,10,20,0,20),
+        new TestCaseData("Aged Brie", 0,50,50,0,50),
+        new TestCaseData("Aged Brie", 0,100,50,0,100),
+        new  TestCaseData("Backstage passes", 0, 50, 10, 40, 10),
+        new  TestCaseData("Backstage passes", 0, 10, 2, 9, 1),
+        new  TestCaseData("Backstage passes", 0, 5, 3, 4, 1)
     };
 }
