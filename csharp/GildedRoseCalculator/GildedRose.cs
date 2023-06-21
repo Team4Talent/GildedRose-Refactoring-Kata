@@ -11,11 +11,24 @@ public class GildedRose
     {
         for (var i = 0; i < Items.Count; i++)
         {
+            if (Items[i].Name.Contains("Sulfuras", StringComparison.OrdinalIgnoreCase))
+            {
+                Items[i].Quality = 80;
+                Items[i].SellIn -= 1;
+                return;
+            }
+
+            if (Items[i].Name.Contains("Conjured", StringComparison.OrdinalIgnoreCase))
+            {
+                ProcessConjured(i);
+                return;
+            }
+
             if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
             {
                 if (Items[i].Quality > 0)
                 {
-                    if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                    if (Items[i].Name != "Hand of Ragnaros")
                     {
                         Items[i].Quality = Items[i].Quality - 1;
                     }
@@ -80,6 +93,37 @@ public class GildedRose
                     }
                 }
             }
+
+            ProcessMaxMinVqlue(Items[i]);
+        }
+    }
+
+    private void ProcessConjured(int i)
+    {
+        Items[i].Quality = ClampValue(Items[i].Quality - 2, 0, 50);
+        Items[i].SellIn = ClampValue(Items[i].SellIn - 1, 0, int.MaxValue);
+    }
+
+    private int ClampValue(int value, int min, int max)
+    {
+        if (value <= min)
+            return min;
+        if (value >= max)
+            return max;
+
+        return value;
+    }
+
+    private void ProcessMaxMinVqlue(Item item)
+    {
+        if (item.Quality > 50)
+        {
+            item.Quality = 50;
+        }
+        
+        if (item.SellIn < 0)
+        {
+            item.SellIn = 0;
         }
     }
 }
